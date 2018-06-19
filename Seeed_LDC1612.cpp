@@ -45,6 +45,7 @@ void LDC1612::read_sensor_infomation()
     IIC_read_16bit(READ_DEVICE_ID,&value);
     Serial.print("DEVICE id =0x");
     Serial.println(value,HEX);
+    return 0;
 }
 
 
@@ -66,10 +67,10 @@ s32 LDC1612::init()
     IIC_begin();
 
     /*reset sensor*/
-    return reset_sensor();
+    return 0;
 }
 
-void LDC1612::single_channel_config(u8 channel)
+s32 LDC1612::single_channel_config(u8 channel)
 {
     /*Set coil inductor parameter first.*/
     /*20 TURNS*/
@@ -98,26 +99,29 @@ void LDC1612::single_channel_config(u8 channel)
     // set_Q_factor(CHANNEL_0,40.7);
 
     
-    set_FIN_FREF_DIV(CHANNEL_0);
+    if(set_FIN_FREF_DIV(CHANNEL_0))
+    {
+        return -1;
+    }
 
     set_LC_stabilize_time(CHANNEL_0);
 
     /*Set conversion interval time*/
-    set_conversion_time(0,0x0546);
+    set_conversion_time(CHANNEL_0,0x0546);
 
     /*Set driver current!*/
-    set_driver_current(0,0xa000);
+    set_driver_current(CHANNEL_0,0xa000);
 
     /*single conversion*/
-    set_mux_config(0x08);
+    set_mux_config(0x20c);
     /*start channel 0*/
     u16 config=0x1601;
-    select_channel_to_convert(0,&config);
+    select_channel_to_convert(CHANNEL_0,&config);
     set_sensor_config(config);
-
+    return 0;
 }
 
-void LDC1612::LDC1612_mutiple_channel_config()
+s32 LDC1612::LDC1612_mutiple_channel_config()
 {
     /*Set coil inductor parameter first.*/
     /*20 TURNS*/
@@ -127,10 +131,10 @@ void LDC1612::LDC1612_mutiple_channel_config()
     set_Q_factor(CHANNEL_0,35.97);
 
     /*25 TURNS*/
-    set_Rp(CHANNEL_1,24.9);
-    set_L(CHANNEL_1,53.95);
+    set_Rp(CHANNEL_1,15.727);
+    set_L(CHANNEL_1,18.147);
     set_C(CHANNEL_1,100);
-    set_Q_factor(CHANNEL_1,32.57);
+    set_Q_factor(CHANNEL_1,35.97);
 
     // /*36 TURNS single layer*/
     // set_Rp(CHANNEL_0,28.18);
@@ -145,7 +149,10 @@ void LDC1612::LDC1612_mutiple_channel_config()
     // set_Q_factor(CHANNEL_0,40.7);
 
 
-    set_FIN_FREF_DIV(CHANNEL_0);
+    if(set_FIN_FREF_DIV(CHANNEL_0))
+    {
+        return -1;
+    }
     set_FIN_FREF_DIV(CHANNEL_1);
 
     /* 16*38/Fref=30us ,wait 30us for LC sensor stabilize before initiation of a conversion.*/
@@ -160,12 +167,15 @@ void LDC1612::LDC1612_mutiple_channel_config()
     set_driver_current(CHANNEL_0,0xa000);
     set_driver_current(CHANNEL_1,0xa000);
 
+    
     /*mutiple conversion*/
     set_mux_config(0x820c);
+    //set_mux_config(0x20c);
     /*start channel 0*/
+    set_sensor_config(0x1601);
     //u16 config=0x1601;
     //select_channel_to_convert(0,&config);
-    set_sensor_config(0x1601);
+    return 0;
 }
 
 
@@ -183,7 +193,12 @@ s32 LDC1612::parse_result_data(u8 channel,u32 raw_result,u32* result)
     {
         Serial.println("can't detect coil Coil Inductance!!!");
         *result=0;
+        return -1;
     }
+    // else if(0==*result)
+    // {
+    //     Serial.println("result is none!!!");
+    // }
     value=raw_result>>24;
     if(value&0x80)
     {

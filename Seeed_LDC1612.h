@@ -132,9 +132,9 @@ class LDC1612:public IIC_OPRTS
         s32 set_driver_current(u8 channel,u16 value);
         s32 set_FIN_FREF_DIV(u8 channel);
         void select_channel_to_convert(u8 channel,u16 *value);
-        void single_channel_config(u8 channel);
+        s32 single_channel_config(u8 channel);
         /*Total two channels*/
-        void LDC1612_mutiple_channel_config();
+        s32 LDC1612_mutiple_channel_config();
 
         void set_Rp(u8 channel,float n_kom);
         void set_L(u8 channel,float n_uh);
