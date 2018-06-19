@@ -40,19 +40,17 @@ void setup()
     delay(100);
     Serial.println("start!");
 
-    if(sensor.init())
+    sensor.init();
+
+    /*Enable INT-PIN,Interrupted after measurement is completed.*/
+    //sensor.set_ERROR_CONFIG(0x01);
+
+    /*multiple channel use case configuration.*/
+    if(sensor.LDC1612_mutiple_channel_config())
     {
         Serial.println("can't detect sensor!");
         while(1);
     }
-    delay(10);
-
-    /*Enable INT-PIN,Interrupted after measurement is completed.*/
-    sensor.set_ERROR_CONFIG(0x01);
-
-    /*multiple channel use case configuration.*/
-    sensor.LDC1612_mutiple_channel_config();
-
 }
 
 

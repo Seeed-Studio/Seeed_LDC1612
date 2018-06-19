@@ -40,14 +40,14 @@ void setup()
     delay(100);
     Serial.println("start!");
 
-    if(sensor.init())
+    sensor.init();
+
+    if(sensor.single_channel_config(CHANNEL_0))
     {
         Serial.println("can't detect sensor!");
         while(1);
     }
-    delay(50);
 
-    sensor.single_channel_config(CHANNEL_0);
 
 }
 
