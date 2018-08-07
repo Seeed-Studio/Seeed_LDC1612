@@ -1,23 +1,22 @@
 Seeed Inductive Sensor LDC1612
 =====================================  
 
-![LDC1612](https://github.com/linux-downey/Seeed_Inductive_Sensor_LDC1612/blob/master/LDC1612.png)
+![LDC1612](https://github.com/Jenkinlu001/Seeed_Inductive_Sensor_LDC1612-master/blob/master/LDC1612.jpg)
 
 Introduction:  
 ------------------------  
 The LDC1612 is 2 channel,28-bit inductance to digital converters (LDCs) for inductive sensing solutions. With multiple channels and support for remote sensing,the LDC1612 enable the performance and reliability benefits of inductive sensing to be realized at minimal cost and power.  
 ***
 
-Before Use
-=============
 
 
 Usage:
 ==========
 Download all the source files.
-There are two examples for user to use.
+There are three examples for user to use.
 >* **examples/basic_demo/basic_demo.ino**,this example shows a demo for single channel measurement.
 >* **examples/muti_channel_demo/muti_channel_demo.ino**,this example shows multiple channels measurement.LDC1612 support two channels.
+>* **examples/basic_demo/coin_test_demo.ino**,this example shows a demo for the sensor detects the distance of the coin. Note: the sensor is suspended during testing.
 
 
 Notice:
