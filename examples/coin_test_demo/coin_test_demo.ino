@@ -32,12 +32,12 @@
 #include "Seeed_LDC1612.h"
 
 LDC1612 sensor;
-const u32 DISTANCE_00=44380000;  //do not detect
-const u32 DISTANCE_00_01=70000000;  // distance:<1mm
+const u32 DISTANCE_00=44000000;  //do not detect
+const u32 DISTANCE_00_01=60000000;  // distance:<1mm
 const u32 DISTANCE_01_05=45000000;  // distance:1mm~5mm
-const u32 DISTANCE_05_10=44800000; // distance:5mm~10mm
-const u32 DISTANCE_10_15=44470000; // distance:10mm~15mm
-const u32 DISTANCE_15_20=44400000; // distance:15mm~20mm
+const u32 DISTANCE_05_10=44250000; // distance:5mm~10mm
+const u32 DISTANCE_10_15=44080000; // distance:10mm~15mm
+const u32 DISTANCE_15_20=44020000; // distance:15mm~20mm
 
 void setup()
 {
