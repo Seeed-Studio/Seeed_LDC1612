@@ -1,6 +1,6 @@
 /*
  * Seeed_LDC1612.h
- * Driver for DIGITAL I2C HUMIDITY AND TEMPERATURE SENSOR
+ * Driver for Inductive Sensor LDC1612
  *  
  * Copyright (c) 2018 Seeed Technology Co., Ltd.
  * Website    : www.seeed.cc

@@ -1,6 +1,6 @@
 /*
  * Seeed_LDC1612.cpp
- * Driver for DIGITAL I2C HUMIDITY AND TEMPERATURE SENSOR
+ * Driver for Inductive Sensor LDC1612
  *  
  * Copyright (c) 2018 Seeed Technology Co., Ltd.
  * Website    : www.seeed.cc
@@ -33,6 +33,13 @@
 #include "Seeed_LDC1612.h"
 #include "math.h"
 
+#ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
+  #define SERIAL SerialUSB
+#else
+  #define SERIAL Serial
+#endif
+
+
 /**@brief read sensor's information
  * 
  * */
@@ -40,11 +47,11 @@ void LDC1612::read_sensor_infomation()
 {
     u16 value=0;
     IIC_read_16bit(READ_MANUFACTURER_ID,&value);
-    Serial.print("manufacturer id =0x");
-    Serial.println(value,HEX);
+    SERIAL.print("manufacturer id =0x");
+    SERIAL.println(value,HEX);
     IIC_read_16bit(READ_DEVICE_ID,&value);
-    Serial.print("DEVICE id =0x");
-    Serial.println(value,HEX);
+    SERIAL.print("DEVICE id =0x");
+    SERIAL.println(value,HEX);
     return 0;
 }
 
@@ -191,38 +198,38 @@ s32 LDC1612::parse_result_data(u8 channel,u32 raw_result,u32* result)
     *result=raw_result&0x0fffffff;
     if(0xfffffff==*result)
     {
-        Serial.println("can't detect coil Coil Inductance!!!");
+        SERIAL.println("can't detect coil Coil Inductance!!!");
         *result=0;
         return -1;
     }
     // else if(0==*result)
     // {
-    //     Serial.println("result is none!!!");
+    //     SERIAL.println("result is none!!!");
     // }
     value=raw_result>>24;
     if(value&0x80)
     {
-        Serial.print("channel ");
-        Serial.print(channel);
-        Serial.println(": ERR_UR-Under range error!!!");
+        SERIAL.print("channel ");
+        SERIAL.print(channel);
+        SERIAL.println(": ERR_UR-Under range error!!!");
     }
     if(value&0x40)
     {
-        Serial.print("channel ");
-        Serial.print(channel);
-        Serial.println(": ERR_OR-Over range error!!!");
+        SERIAL.print("channel ");
+        SERIAL.print(channel);
+        SERIAL.println(": ERR_OR-Over range error!!!");
     }
     if(value&0x20)
     {
-        Serial.print("channel ");
-        Serial.print(channel);
-        Serial.println(": ERR_WD-Watch dog timeout error!!!");
+        SERIAL.print("channel ");
+        SERIAL.print(channel);
+        SERIAL.println(": ERR_WD-Watch dog timeout error!!!");
     }
     if(value&0x10)
     {
-        Serial.print("channel ");
-        Serial.print(channel);
-        Serial.println(": ERR_AE-error!!!");
+        SERIAL.print("channel ");
+        SERIAL.print(channel);
+        SERIAL.println(": ERR_AE-error!!!");
     }
     return 0;
 }
@@ -290,8 +297,8 @@ s32 LDC1612::set_FIN_FREF_DIV(u8 channel)
     u16 FIN_DIV,FREF_DIV;
 
     Fsensor[channel]=1/(2*3.14*sqrt(inductance[channel]*capacitance[channel]*pow(10,-18)))*pow(10,-6);
-    Serial.print("fsensor =");
-    Serial.println(Fsensor[channel]);
+    SERIAL.print("fsensor =");
+    SERIAL.println(Fsensor[channel]);
 
 
     FIN_DIV=(u16)(Fsensor[channel]/8.75+1);
@@ -419,14 +426,14 @@ s32 LDC1612::sensor_status_parse(u16 value)
     section=value>>14;
     switch(section)
     {
-        case 0:Serial.println("Channel 0 is source of flag or error.");
+        case 0:SERIAL.println("Channel 0 is source of flag or error.");
         break;
-        case 1:Serial.println("Channel 1 is source of flag or error.");
+        case 1:SERIAL.println("Channel 1 is source of flag or error.");
         break;
         /*Only support LDC1614*/
-        case 2:Serial.println("Channel 2 is source of flag or error.");
+        case 2:SERIAL.println("Channel 2 is source of flag or error.");
         break;
-        case 3:Serial.println("Channel 3 is source of flag or error.");
+        case 3:SERIAL.println("Channel 3 is source of flag or error.");
         break;
         default:
         break;
@@ -435,18 +442,18 @@ s32 LDC1612::sensor_status_parse(u16 value)
     {
         if(value & (u16)1<<(8+i) )
         {
-            Serial.println(status_str[6-i]);
+            SERIAL.println(status_str[6-i]);
         }
     }
     if(value&(1<<6))
     {
-        Serial.println(status_str[6]);
+        SERIAL.println(status_str[6]);
     }
     for(u32 i=0;i<4;i++)
     {
         if(value & (1<<i) )
         {
-            Serial.println(status_str[10-i]);
+            SERIAL.println(status_str[10-i]);
         }
     }
 }
@@ -459,8 +466,8 @@ u32 LDC1612::get_sensor_status()
     u16 value=0;
     IIC_read_16bit(SENSOR_STATUS_REG,&value);
     
-    // Serial.print("status =");
-    // Serial.println(value,HEX);
+    // SERIAL.print("status =");
+    // SERIAL.println(value,HEX);
 
     sensor_status_parse(value);
     return value;
