@@ -27,7 +27,7 @@ Notice:
 
 Reference:
 ===============
-Refer to the **/doc** to get more detail.
+Refer to the **datasheet** to get more detail.
 This is just a simple and universal template.
 
 ***
