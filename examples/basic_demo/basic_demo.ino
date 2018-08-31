@@ -1,6 +1,6 @@
 /*
  * basic_demo.ino
- * Driver for DIGITAL I2C HUMIDITY AND TEMPERATURE SENSOR
+ * Example for Inductive Sensor LDC1612
  *  
  * Copyright (c) 2018 Seeed Technology Co., Ltd.
  * Website    : www.seeed.cc
@@ -31,20 +31,26 @@
 
 #include "Seeed_LDC1612.h"
 
+#ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
+  #define SERIAL SerialUSB
+#else
+  #define SERIAL Serial
+#endif
+
 LDC1612 sensor;
 
 
 void setup()
 {
-    Serial.begin(115200);
+    SERIAL.begin(115200);
     delay(100);
-    Serial.println("start!");
+    SERIAL.println("start!");
 
     sensor.init();
 
     if(sensor.single_channel_config(CHANNEL_0))
     {
-        Serial.println("can't detect sensor!");
+        SERIAL.println("can't detect sensor!");
         while(1);
     }
 
@@ -66,8 +72,8 @@ void loop()
     /*sensor result value.you can make a lot of application according to its changes.*/
     if(0!=result_channel1)
     {
-        Serial.print("result_channel0 is ");
-        Serial.println(result_channel1);
+        SERIAL.print("result_channel0 is ");
+        SERIAL.println(result_channel1);
     }
     
     delay(1000);

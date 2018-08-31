@@ -1,10 +1,10 @@
 /*
- * basic_demo.ino
- * Driver for DIGITAL I2C HUMIDITY AND TEMPERATURE SENSOR
+ * coin_test_demo.ino
+ * Example for Inductive Sensor LDC1612
  *  
  * Copyright (c) 2018 Seeed Technology Co., Ltd.
  * Website    : www.seeed.cc
- * Author     : downey
+ * Author     : Jenkin
  * Create Time: August 2018
  * Change Log :
  *
@@ -31,6 +31,12 @@
 
 #include "Seeed_LDC1612.h"
 
+#ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
+  #define SERIAL SerialUSB
+#else
+  #define SERIAL Serial
+#endif
+
 LDC1612 sensor;
 const u32 DISTANCE_00=44380000;  //do not detect
 const u32 DISTANCE_00_01=70000000;  // distance:<1mm
@@ -41,15 +47,15 @@ const u32 DISTANCE_15_20=44400000; // distance:15mm~20mm
 
 void setup()
 {
-    Serial.begin(115200);
+    SERIAL.begin(115200);
     delay(100);
-    Serial.println("start!");
+    SERIAL.println("start!");
 
     sensor.init();
 
     if(sensor.single_channel_config(CHANNEL_0))
     {
-        Serial.println("can't detect sensor!");
+        SERIAL.println("can't detect sensor!");
         while(1);
     }
 
@@ -75,37 +81,37 @@ void loop()
     {
         if(result_channel1<DISTANCE_00)
         {
-            Serial.println("There is no coin here!");
+            SERIAL.println("There is no coin here!");
         }
 
         if(result_channel1>=DISTANCE_00_01)
         {
-            Serial.println("The distance between the COIN is 0~1mm");
+            SERIAL.println("The distance between the COIN is 0~1mm");
         }
 
         if(result_channel1<DISTANCE_00_01&&result_channel1>=DISTANCE_01_05)
         {
-            Serial.println("The distance between the COIN is 1~5mm");
+            SERIAL.println("The distance between the COIN is 1~5mm");
         }
 
         if(result_channel1<DISTANCE_01_05&&result_channel1>=DISTANCE_05_10)
         {
-            Serial.println("The distance between the COIN is 5~10mm");
+            SERIAL.println("The distance between the COIN is 5~10mm");
         }
 
         if(result_channel1<DISTANCE_05_10&&result_channel1>=DISTANCE_10_15)
         {
-            Serial.println("The distance between the COIN is 10~15mm");
+            SERIAL.println("The distance between the COIN is 10~15mm");
         }
 
         if(result_channel1<DISTANCE_10_15&&result_channel1>=DISTANCE_15_20)
         {
-            Serial.println("The distance between the COIN is 15~20mm");
+            SERIAL.println("The distance between the COIN is 15~20mm");
         }
 
         if(result_channel1<DISTANCE_15_20&&result_channel1>=DISTANCE_00)
         {
-            Serial.println("The distance between the COIN is more than 2mm");
+            SERIAL.println("The distance between the COIN is more than 2mm");
         }
 
     }
