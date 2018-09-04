@@ -45,7 +45,7 @@ void LDC1612::read_sensor_infomation()
     IIC_read_16bit(READ_DEVICE_ID,&value);
     Serial.print("DEVICE id =0x");
     Serial.println(value,HEX);
-    return 0;
+    
 }
 
 
