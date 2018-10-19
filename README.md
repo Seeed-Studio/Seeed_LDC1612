@@ -1,7 +1,6 @@
 Seeed Inductive Sensor LDC1612
 =====================================  
 
-![LDC1612](https://github.com/Jenkinlu001/Seeed_Inductive_Sensor_LDC1612-master/blob/master/LDC1612.jpg)
 
 Introduction:  
 ------------------------  
