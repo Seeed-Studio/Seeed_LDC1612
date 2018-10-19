@@ -45,7 +45,7 @@ void LDC1612::read_sensor_infomation()
     IIC_read_16bit(READ_DEVICE_ID,&value);
     Serial.print("DEVICE id =0x");
     Serial.println(value,HEX);
-    return 0;
+    return ;
 }
 
 
@@ -472,7 +472,7 @@ u32 LDC1612::get_sensor_status()
 /************************************************IIC PART************************************************/
 /**********************************************************************************************************/
 
-s32 IIC_OPRTS::IIC_write_byte(u8 reg,u8 byte)
+s32 LDC1612_IIC_OPRTS::IIC_write_byte(u8 reg,u8 byte)
 {
     Wire.beginTransmission(_IIC_ADDR);
     Wire.write(reg);
@@ -481,7 +481,7 @@ s32 IIC_OPRTS::IIC_write_byte(u8 reg,u8 byte)
 }
 
 
-s32 IIC_OPRTS::IIC_write_16bit(u8 reg,u16 value)
+s32 LDC1612_IIC_OPRTS::IIC_write_16bit(u8 reg,u16 value)
 {
     Wire.beginTransmission(_IIC_ADDR);
     Wire.write(reg);
@@ -494,7 +494,7 @@ s32 IIC_OPRTS::IIC_write_16bit(u8 reg,u16 value)
 
 
 
-void IIC_OPRTS::IIC_read_byte(u8 reg,u8* byte)
+void LDC1612_IIC_OPRTS::IIC_read_byte(u8 reg,u8* byte)
 {
     Wire.beginTransmission(_IIC_ADDR);
     Wire.write(reg);
@@ -506,7 +506,7 @@ void IIC_OPRTS::IIC_read_byte(u8 reg,u8* byte)
     
 }
 
-void IIC_OPRTS::IIC_read_16bit(u8 start_reg,u16 *value)
+void LDC1612_IIC_OPRTS::IIC_read_16bit(u8 start_reg,u16 *value)
 {
     u8 val=0;
     *value=0;
@@ -524,7 +524,7 @@ void IIC_OPRTS::IIC_read_16bit(u8 start_reg,u16 *value)
 
 
 
-void IIC_OPRTS::set_iic_addr(u8 IIC_ADDR)
+void LDC1612_IIC_OPRTS::set_iic_addr(u8 IIC_ADDR)
 {
     _IIC_ADDR=IIC_ADDR;
 }

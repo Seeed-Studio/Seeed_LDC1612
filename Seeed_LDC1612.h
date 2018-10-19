@@ -35,10 +35,41 @@
 #include <Wire.h>
 #include <Arduino.h>
 
-typedef int s32;
-typedef long unsigned int u32;
-typedef unsigned char u8;
+#ifndef SEEED_DN_DEFINES
+#define SEEED_DN_DEFINES
+
+#ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
+  #define SERIAL_DB SerialUSB
+#else
+  #define SERIAL_DB Serial
+#endif
+
+
+typedef int            s32;
+typedef long unsigned int   u32;
+typedef short          s16;
 typedef unsigned short u16;
+typedef char           s8;
+typedef unsigned char  u8;
+
+typedef enum	
+{
+    NO_ERROR=0,
+    ERROR_PARAM=-1,
+    ERROR_COMM =-2,
+    ERROR_OTHERS=-128,
+}err_t;
+
+
+#define CHECK_RESULT(a,b)   do{if(a=b)  {    \
+                            SERIAL_DB.print(__FILE__);    \
+                            SERIAL_DB.print(__LINE__);   \
+                            SERIAL_DB.print(" error code =");  \
+                            SERIAL_DB.println(a);                   \
+                            return a;   \
+                            }}while(0)
+
+#endif
 
 #define DEFAULT_IIC_ADDR  0x2B
 
@@ -99,7 +130,7 @@ typedef unsigned short u16;
 
 #define CHANNEL_NUM  2
 /******************************************************************************/
-class IIC_OPRTS
+class LDC1612_IIC_OPRTS
 {
     public:
         void IIC_begin(){Wire.begin();}
@@ -113,7 +144,7 @@ class IIC_OPRTS
 };
 
 
-class LDC1612:public IIC_OPRTS
+class LDC1612:public LDC1612_IIC_OPRTS
 {
     public:
         LDC1612(u8 IIC_ADDR=DEFAULT_IIC_ADDR);
