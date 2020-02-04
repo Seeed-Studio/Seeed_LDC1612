@@ -1,4 +1,4 @@
-Seeed Inductive Sensor LDC1612
+Seeed Inductive Sensor LDC1612  [![Build Status](https://travis-ci.com/Seeed-Studio/Seeed_LDC1612.svg?branch=master)](https://travis-ci.com/Seeed-Studio/Seeed_LDC1612)
 =====================================  
 
 
