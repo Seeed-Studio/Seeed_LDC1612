@@ -410,6 +410,8 @@ s32 LDC1612::sensor_status_parse(u16 value) {
             Serial.println(status_str[10 - i]);
         }
     }
+
+    return 0;
 }
 
 /** @brief get sensor status
